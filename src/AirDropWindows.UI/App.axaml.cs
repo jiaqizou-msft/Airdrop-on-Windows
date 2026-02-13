@@ -1,11 +1,16 @@
+using System;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
-using System.Linq;
 using Avalonia.Markup.Xaml;
+using Microsoft.Extensions.DependencyInjection;
 using AirDropWindows.UI.ViewModels;
 using AirDropWindows.UI.Views;
+using AirDropWindows.Core.Interfaces;
+using AirDropWindows.Core.Configuration;
+using Serilog;
 
 namespace AirDropWindows.UI;
 
@@ -20,12 +25,26 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
+            // Avoid duplicate validations from both Avalonia and the CommunityToolkit.
             // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
             DisableAvaloniaDataAnnotationValidation();
+
+            // Get services from DI container
+            var serviceProvider = Program.ServiceProvider;
+            if (serviceProvider == null)
+            {
+                throw new InvalidOperationException("Service provider not initialized");
+            }
+
+            var logger = serviceProvider.GetRequiredService<ILogger>();
+            var discoveryService = serviceProvider.GetRequiredService<IDiscoveryService>();
+            var transferService = serviceProvider.GetRequiredService<ITransferService>();
+            var configService = serviceProvider.GetRequiredService<Services.Configuration.ConfigurationService>();
+            var settings = configService.LoadSettingsAsync().GetAwaiter().GetResult();
+
             desktop.MainWindow = new MainWindow
             {
-                DataContext = new MainWindowViewModel(),
+                DataContext = new MainWindowViewModel(logger, discoveryService, transferService, settings),
             };
         }
 
