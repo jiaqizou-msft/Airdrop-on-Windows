@@ -23,14 +23,11 @@ public static class ServiceCollectionExtensions
         // Register discovery services
         services.AddSingleton<AirDropWindows.Core.Interfaces.IDiscoveryService, AirDropWindows.Discovery.DiscoveryService>();
 
-        // TODO: Register network services
-        // services.AddSingleton<INetworkTransport, WiFiDirectTransport>();
+        // Register security services
+        services.AddSingleton<AirDropWindows.Core.Interfaces.ISecurityService, AirDropWindows.Security.SecurityService>();
 
-        // TODO: Register security services
-        // services.AddSingleton<ISecurityService, SecurityService>();
-
-        // TODO: Register transfer services
-        // services.AddSingleton<ITransferService, TransferService>();
+        // Register transfer services
+        services.AddSingleton<AirDropWindows.Core.Interfaces.ITransferService, TransferService>();
 
         return services;
     }
