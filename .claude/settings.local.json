@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet nuget list:*)",
+      "Bash(dotnet restore:*)",
+      "Bash(dotnet sln add:*)",
+      "Bash(dotnet sln:*)"
+    ]
+  }
+}

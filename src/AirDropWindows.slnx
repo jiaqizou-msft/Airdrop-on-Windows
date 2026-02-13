@@ -1,0 +1,9 @@
+<Solution>
+  <Project Path="AirDropWindows.Core/AirDropWindows.Core.csproj" />
+  <Project Path="AirDropWindows.Discovery/AirDropWindows.Discovery.csproj" />
+  <Project Path="AirDropWindows.Network/AirDropWindows.Network.csproj" />
+  <Project Path="AirDropWindows.Protocol/AirDropWindows.Protocol.csproj" />
+  <Project Path="AirDropWindows.Security/AirDropWindows.Security.csproj" />
+  <Project Path="AirDropWindows.Services/AirDropWindows.Services.csproj" />
+  <Project Path="AirDropWindows.UI/AirDropWindows.UI.csproj" />
+</Solution>
