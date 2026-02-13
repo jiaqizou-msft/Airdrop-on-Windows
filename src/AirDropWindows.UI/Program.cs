@@ -27,16 +27,16 @@ sealed class Program
             Log.Information("Starting AirDrop Windows v{Version}", Constants.Version);
             Log.Information("Platform: {Platform}, OS: {OS}", Environment.OSVersion.Platform, Environment.OSVersion);
 
-            // Build DI container
-            ServiceProvider = BuildServiceProvider();
-
-            // Load configuration
-            var configService = ServiceProvider.GetRequiredService<ConfigurationService>();
+            // Load configuration first
+            var configService = new ConfigurationService(Log.Logger);
             var settings = configService.LoadSettingsAsync().GetAwaiter().GetResult();
 
             // Reconfigure logger with loaded settings
             Log.Logger = Services.Logging.LoggerConfiguration.CreateLogger(settings.Logging);
             Log.Information("Configuration loaded, logger reconfigured");
+
+            // Build DI container with loaded settings
+            ServiceProvider = BuildServiceProvider(settings);
 
             // Start Avalonia application
             BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
@@ -62,12 +62,12 @@ sealed class Program
     /// <summary>
     /// Build the dependency injection service provider
     /// </summary>
-    private static IServiceProvider BuildServiceProvider()
+    private static IServiceProvider BuildServiceProvider(AppSettings settings)
     {
         var services = new ServiceCollection();
 
         // Register AirDrop services
-        services.AddAirDropServices(Log.Logger);
+        services.AddAirDropServices(Log.Logger, settings);
 
         return services.BuildServiceProvider();
     }
