@@ -20,8 +20,8 @@ public static class ServiceCollectionExtensions
         // Register configuration service
         services.AddSingleton<ConfigurationService>();
 
-        // TODO: Register discovery services
-        // services.AddSingleton<IDiscoveryService, DiscoveryService>();
+        // Register discovery services
+        services.AddSingleton<AirDropWindows.Core.Interfaces.IDiscoveryService, AirDropWindows.Discovery.DiscoveryService>();
 
         // TODO: Register network services
         // services.AddSingleton<INetworkTransport, WiFiDirectTransport>();
